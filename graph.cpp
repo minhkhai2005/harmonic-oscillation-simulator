@@ -74,12 +74,17 @@ Graph::Graph(sf::RenderWindow & target, float A, float sp, float initPh)
 
   xPositionLine.setFillColor(sf::Color::Red);
   xPositionLine.setRotation(90);
+
+  runClock = true;
 }
 
 void Graph::render()
 {
   //calculating
-  t = clock.getElapsedTime();
+  if (runClock)
+    t += clock.restart();
+  else
+    clock.restart();
   x.setPosition(root + sf::Vector2f(amplitude* cos(speed * t.asSeconds() + initPhase) * 40,0));
   phaseLine.setRotation(speed * -57.2958 * t.asSeconds() + initPhase * -57.2958);
   velocity = - amplitude * sin(speed * t.asSeconds() + initPhase);

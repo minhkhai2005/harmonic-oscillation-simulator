@@ -34,6 +34,7 @@ protected:
   float acceleration;
   float velocity;
 public:
+  bool runClock;
   Graph(sf::RenderWindow & target, float A = 0, float sp = 0, float initPh = 0);
   void render();
 };
