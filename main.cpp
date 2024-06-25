@@ -60,9 +60,11 @@ int main(int argc, char *argv[])
   mousePositionIndicator.setCharacterSize(10);
   mousePositionIndicator.setPosition(10,10);
 
-  Button startStopButton(sf::Vector2f(70,30),"start",LucidaGrande,sf::Color(49, 116, 224),mainWindow);
-  startStopButton.setPosition(40,40);
-  startStopButton.setCharacterSize(20);
+  Button startStopButton(sf::Vector2f(100,30),"start",LucidaGrande,sf::Color(49, 116, 224),mainWindow);
+  startStopButton.setPosition(60,200);
+  startStopButton.setCharacterSize(16);
+
+
   // main loop
   while (mainWindow.isOpen()) {
     sf::Event event;
@@ -86,6 +88,9 @@ int main(int argc, char *argv[])
     }
     if (startStopButton.buttonRelease())
       graph.runClock = !graph.runClock;
+
+
+    // even loop
     while (mainWindow.pollEvent(event)) {
       if(event.type == sf::Event::Closed) 
         mainWindow.close();

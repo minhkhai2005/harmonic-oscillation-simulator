@@ -36,6 +36,12 @@ protected:
 public:
   bool runClock;
   Graph(sf::RenderWindow & target, float A = 0, float sp = 0, float initPh = 0);
+  std::string getCordinate();
+  std::string getAmplitude();
+  std::string getSpeed();
+  std::string getInitPhase();
+  std::string getAcceleration();
+  std::string getVelocity();
   void render();
 };
 
