@@ -4,5 +4,6 @@ project(daodongdieuhoa)
 
 add_executable(${PROJECT_NAME} main.cpp)
 
+add_subdirectory(${PROJECT_SOURCE_DIR}/button)
 
 

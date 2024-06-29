@@ -1,11 +1,15 @@
 #include "graph.hpp"
 #include "SFML/Graphics/Color.hpp"
+#include "SFML/Graphics/Font.hpp"
 #include "SFML/Graphics/PrimitiveType.hpp"
+#include "SFML/Graphics/Text.hpp"
 #include "SFML/Graphics/VertexArray.hpp"
 #include "SFML/System/Clock.hpp"
 #include "SFML/System/Vector2.hpp"
 #include <SFML/Graphics.hpp>
+#include <string>
 #include <vector>
+
 
 Graph::Graph(sf::RenderWindow & target, float A, float sp, float initPh)
 {
@@ -17,6 +21,8 @@ Graph::Graph(sf::RenderWindow & target, float A, float sp, float initPh)
   root = sf::Vector2f(targetSize.x/2, targetSize.y/2);
   x_axis = sf::VertexArray(sf::Lines, 2);
   y_axis = sf::VertexArray(sf::Lines, 2);
+  x_axisNumbers = new sf::Text[32];
+  y_axisNumbers = new sf::Text[19];
 
   x_axis[0].color = sf::Color::Black;
   x_axis[1].color = sf::Color::Black;
@@ -40,6 +46,13 @@ Graph::Graph(sf::RenderWindow & target, float A, float sp, float initPh)
     verticalLine[1].color = sf::Color(194, 194, 194);
 
     verticalLines.push_back(verticalLine);
+
+    x_axisNumbers[(int)windowWidth / 40].setFont(font);
+    x_axisNumbers[(int)windowWidth / 40].setPosition(sf::Vector2f(windowWidth, targetSize.y / 2 + 5));
+    x_axisNumbers[(int)windowWidth / 40].setCharacterSize(10);
+    x_axisNumbers[(int)windowWidth / 40].setFillColor(sf::Color::Black);
+    x_axisNumbers[(int)windowWidth / 40].setStyle(sf::Text::Regular);
+    x_axisNumbers[(int)windowWidth / 40].setString(std::to_string((int)windowWidth / 40 - 640 / 40));
     windowWidth += targetSize.x * twoVerticalLineWidthRatio;
   }
 
@@ -52,6 +65,13 @@ Graph::Graph(sf::RenderWindow & target, float A, float sp, float initPh)
     HorizontalLine[1].color = sf::Color(194, 194, 194);
 
     HorizontalLines.push_back(HorizontalLine);
+
+    y_axisNumbers[(int)windowHeight / 40].setFont(font);
+    y_axisNumbers[(int)windowHeight / 40].setPosition(sf::Vector2f(targetSize.x / 2 + 5,windowHeight));
+    y_axisNumbers[(int)windowHeight / 40].setCharacterSize(10);
+    y_axisNumbers[(int)windowHeight / 40].setFillColor(sf::Color::Black);
+    y_axisNumbers[(int)windowHeight / 40].setStyle(sf::Text::Regular);
+    y_axisNumbers[(int)windowHeight / 40].setString(std::to_string(-((int)windowHeight / 40 - 360 / 40)));
     windowHeight += targetSize.y * twoHorizontalLineHeightRatio;
   }
 
@@ -80,17 +100,21 @@ Graph::Graph(sf::RenderWindow & target, float A, float sp, float initPh)
 
 void Graph::render()
 {
-  //calculating
+  //calculating ----------------------------------------------------------------
   if (runClock)
     t += clock.restart();
   else
     clock.restart();
   x.setPosition(root + sf::Vector2f(amplitude* cos(speed * t.asSeconds() + initPhase) * 40,0));
   phaseLine.setRotation(speed * -57.2958 * t.asSeconds() + initPhase * -57.2958);
-  velocity = - amplitude * sin(speed * t.asSeconds() + initPhase);
   xPositionLine.setPosition(x.getPosition());
   xPositionLine.setSize(sf::Vector2f(velocity * 40,2));
-  // rendering
+  cordinate = amplitude * cos(speed * t.asSeconds() + initPhase);
+  velocity = - amplitude * sin(speed * t.asSeconds() + initPhase);
+  acceleration = - pow(speed,2) * cordinate;
+  phase = speed * t.asSeconds() + initPhase ;
+  // rendering -----------------------------------------------------------------
+
   renderTarget -> draw(phaseCircle);
   for (unsigned i = 0;i < verticalLines.size();++i)
   {
@@ -101,6 +125,14 @@ void Graph::render()
   {
     renderTarget->draw(HorizontalLines[i]);
   }
+  for (int i = 0;i < 32;++i)
+  {
+    renderTarget -> draw(x_axisNumbers[i]);
+  }
+  for (int i = 0; i < 19;++i)
+  {
+    renderTarget -> draw(y_axisNumbers[i]);
+  }
   renderTarget -> draw(x_axis);
   renderTarget -> draw(y_axis);
   renderTarget->draw(x);
@@ -108,7 +140,54 @@ void Graph::render()
   renderTarget -> draw(xPositionLine);
 }
 
+std::string Graph::getCordinate()
+{
+  return std::to_string(cordinate);
+}
 
+std::string Graph::getAmplitude()
+{
+  return std::to_string(amplitude);
+}
 
+std::string Graph::getSpeed()
+{
+  return std::to_string(speed);
+}
+
+std::string Graph::getInitPhase()
+{
+  return std::to_string(initPhase);
+}
+
+std::string Graph::getAcceleration()
+{
+  return std::to_string(acceleration);
+}
+
+std::string Graph::getVelocity()
+{
+  return std::to_string(velocity);
+}
+
+std::string Graph::getPhase()
+{
+  return std::to_string(phase);
+}
+
+std::string Graph::getTime()
+{
+  return std::to_string(t.asSeconds());
+}
+
+void Graph::setFont(sf::Font &font)
+{
+  this->font = font;
+}
 float Graph::twoVerticalLineWidthRatio = 0.03125;
 float Graph::twoHorizontalLineHeightRatio = 1.0/18;
+
+
+
+
+

@@ -4,8 +4,6 @@
 #include "SFML/Graphics/RenderWindow.hpp"
 #include "SFML/Graphics/Text.hpp"
 #include "SFML/Graphics/VertexArray.hpp"
-#include "SFML/System/Clock.hpp"
-#include "SFML/System/Time.hpp"
 #include "SFML/System/Vector2.hpp"
 #include "SFML/Window/Event.hpp"
 #include "SFML/Window/Mouse.hpp"
@@ -41,7 +39,7 @@ int main(int argc, char *argv[])
   sf::RenderWindow mainWindow(sf::VideoMode(1280,720), "Harmonic Oscillator Simulator", sf::Style::Titlebar | sf::Style::Close);
   mainWindow.setFramerateLimit(100);
   mainWindow.setVerticalSyncEnabled(true);
-  mainWindow.setMouseCursorVisible(false);
+  mainWindow.setMouseCursorVisible(true);
 
   Graph graph(mainWindow,A,omega,phi);
   sf::VertexArray mouseVerticalLine(sf::Lines, 2);
@@ -53,16 +51,53 @@ int main(int argc, char *argv[])
 
   sf::Font LucidaGrande;
   LucidaGrande.loadFromFile(std::string(CURRENT_FILEPATH + "LucidaGrande.ttc"));
+  graph.setFont(LucidaGrande);
   sf::Text mousePositionIndicator;
+  sf::Text cordinateIndicator;
+  sf::Text velocityIndicator;
+  sf::Text accelerationIndicator;
+  sf::Text phaseIndicator;
+  sf::Text timeIndicator;
   mousePositionIndicator.setFont(LucidaGrande);
   mousePositionIndicator.setFillColor(sf::Color::Black);
   mousePositionIndicator.setStyle(sf::Text::Regular);
   mousePositionIndicator.setCharacterSize(10);
   mousePositionIndicator.setPosition(10,10);
 
-  Button startStopButton(sf::Vector2f(100,30),"start",LucidaGrande,sf::Color(49, 116, 224),mainWindow);
-  startStopButton.setPosition(60,200);
+  cordinateIndicator.setFont(LucidaGrande);
+  cordinateIndicator.setFillColor(sf::Color::Black);
+  cordinateIndicator.setStyle(sf::Text::Regular);
+  cordinateIndicator.setCharacterSize(10);
+  cordinateIndicator.setPosition(10,25);
+
+  velocityIndicator.setFont(LucidaGrande);
+  velocityIndicator.setFillColor(sf::Color::Black);
+  velocityIndicator.setStyle(sf::Text::Regular);
+  velocityIndicator.setCharacterSize(10);
+  velocityIndicator.setPosition(10,40);
+
+  accelerationIndicator.setFont(LucidaGrande);
+  accelerationIndicator.setFillColor(sf::Color::Black);
+  accelerationIndicator.setStyle(sf::Text::Regular);
+  accelerationIndicator.setCharacterSize(10);
+  accelerationIndicator.setPosition(10,55);
+
+  phaseIndicator.setFont(LucidaGrande);
+  phaseIndicator.setFillColor(sf::Color::Black);
+  phaseIndicator.setStyle(sf::Text::Regular);
+  phaseIndicator.setCharacterSize(10);
+  phaseIndicator.setPosition(10,70);
+
+  timeIndicator.setFont(LucidaGrande);
+  timeIndicator.setFillColor(sf::Color::Black);
+  timeIndicator.setStyle(sf::Text::Regular);
+  timeIndicator.setCharacterSize(10);
+  timeIndicator.setPosition(10,85);
+
+  Button startStopButton(sf::Vector2f(100,30),"start",LucidaGrande,sf::Color(200, 200, 200),mainWindow);
+  startStopButton.setPosition(60,115);
   startStopButton.setCharacterSize(16);
+
 
 
   // main loop
@@ -79,6 +114,10 @@ int main(int argc, char *argv[])
           std::to_string(( -(mouseHorizontalLine[0].position.y - 360) / 40.f) )
         );
 
+    cordinateIndicator.setString(std::string("x = ") + graph.getCordinate());
+    velocityIndicator.setString(std::string("v = ") + graph.getVelocity());
+    accelerationIndicator.setString(std::string("a = ") + graph.getAcceleration());
+    phaseIndicator.setString(std::string("Phase: ") + graph.getPhase());
     if (graph.runClock)
     {
       startStopButton.setText("Stop");
@@ -89,7 +128,7 @@ int main(int argc, char *argv[])
     if (startStopButton.buttonRelease())
       graph.runClock = !graph.runClock;
 
-
+    timeIndicator.setString(std::string("Time: ") + graph.getTime());
     // even loop
     while (mainWindow.pollEvent(event)) {
       if(event.type == sf::Event::Closed) 
@@ -99,10 +138,15 @@ int main(int argc, char *argv[])
     mainWindow.clear(sf::Color::White);
 
     graph.render();
-    startStopButton.render();
     mainWindow.draw(mouseVerticalLine);
     mainWindow.draw(mouseHorizontalLine);
+    startStopButton.render();
     mainWindow.draw(mousePositionIndicator) ;
+    mainWindow.draw(cordinateIndicator);
+    mainWindow.draw(velocityIndicator);
+    mainWindow.draw(accelerationIndicator);
+    mainWindow.draw(phaseIndicator);
+    mainWindow.draw(timeIndicator);
     mainWindow.display();
 
   }
