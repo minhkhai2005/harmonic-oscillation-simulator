@@ -72,6 +72,7 @@ Graph::Graph(sf::RenderWindow & target, float A, float sp, float initPh)
     y_axisNumbers[(int)windowHeight / 40].setFillColor(sf::Color::Black);
     y_axisNumbers[(int)windowHeight / 40].setStyle(sf::Text::Regular);
     y_axisNumbers[(int)windowHeight / 40].setString(std::to_string(-((int)windowHeight / 40 - 360 / 40)));
+    if (y_axisNumbers[(int)windowHeight / 40].getString() == "0"){y_axisNumbers[(int)windowHeight / 40].setString("");}
     windowHeight += targetSize.y * twoHorizontalLineHeightRatio;
   }
 
