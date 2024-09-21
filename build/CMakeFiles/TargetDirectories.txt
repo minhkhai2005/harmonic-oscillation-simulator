@@ -1,3 +1,5 @@
-/Users/macbookcuakhai/dev/game_dev/daodongdieuhoa/build/CMakeFiles/daodongdieuhoa.dir
+/Users/macbookcuakhai/dev/game_dev/daodongdieuhoa/build/CMakeFiles/harmonic-oscillation-simulator.dir
+/Users/macbookcuakhai/dev/game_dev/daodongdieuhoa/build/CMakeFiles/Graph.dir
+/Users/macbookcuakhai/dev/game_dev/daodongdieuhoa/build/CMakeFiles/Button.dir
 /Users/macbookcuakhai/dev/game_dev/daodongdieuhoa/build/CMakeFiles/edit_cache.dir
 /Users/macbookcuakhai/dev/game_dev/daodongdieuhoa/build/CMakeFiles/rebuild_cache.dir
