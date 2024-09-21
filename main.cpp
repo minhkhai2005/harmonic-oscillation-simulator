@@ -9,17 +9,14 @@
 #include "SFML/Window/Mouse.hpp"
 #include "SFML/Window/VideoMode.hpp"
 #include "SFML/Window/WindowStyle.hpp"
-#include <cmath>
-#include <cstdlib>
 #include <iostream>
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 #include <string>
-#include <thread>
 #include "graph.hpp"
 #include "./button/Button.hpp"
-
+#include "myFont.h"
 int main(int argc, char *argv[])
 {
   const std::string CURRENT_FILEPATH = std::string(argv[0]).substr(0,std::string(argv[0]).find_last_of("/") + 1);
@@ -50,7 +47,9 @@ int main(int argc, char *argv[])
   mouseHorizontalLine[1].color = sf::Color::Blue;
 
   sf::Font LucidaGrande;
-  LucidaGrande.loadFromFile(std::string(CURRENT_FILEPATH + "LucidaGrande.ttc"));
+  if (!LucidaGrande.loadFromMemory(LucidaGrande_ttc, LucidaGrande_ttc_len)){
+    return -1;
+  };
   graph.setFont(LucidaGrande);
   sf::Text mousePositionIndicator;
   sf::Text cordinateIndicator;
